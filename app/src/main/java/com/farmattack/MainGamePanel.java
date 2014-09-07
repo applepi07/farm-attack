@@ -6,6 +6,9 @@ package com.farmattack;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,6 +21,9 @@ import android.view.SurfaceView;
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = MainGamePanel.class.getSimpleName();
+    // the fps to be displayed
+    private String avgFps;
+    private long frames;
 
     private MainThread thread;
 
@@ -33,9 +39,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
     }
 
+    public void setAvgFps(String avgFps) {
+        this.avgFps = avgFps;
+    }
+
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
     @Override
@@ -61,12 +70,17 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         Log.d(TAG, "Thread was shut down cleanly");
+        Log.d(TAG, String.valueOf(this.frames));
+    }
+
+    public void update() {
+        this.frames++;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (event.getY() > getHeight() - 50) {
+            if (event.getY() > getHeight() - 250) {
                 thread.setRunning(false);
                 ((Activity)getContext()).finish();
             } else {
@@ -76,8 +90,19 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         return super.onTouchEvent(event);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    public void render(Canvas canvas) {
+        canvas.drawColor(Color.BLACK);
+        //canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), 10, 10, null);
+        displayFps(canvas, this.avgFps);
+    }
+
+    private void displayFps(Canvas canvas, String fps) {
+        if (canvas != null && fps != null) {
+            Paint paint = new Paint();
+            paint.setARGB(255, 255, 255, 255);
+            paint.setTextSize(32);
+            canvas.drawText(fps, this.getWidth() - 150, 60, paint);
+        }
     }
 
 }
