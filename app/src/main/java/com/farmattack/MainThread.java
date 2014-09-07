@@ -27,9 +27,8 @@ public class MainThread extends Thread {
     private DecimalFormat df = new DecimalFormat("0.##");  // 2 dp
     // we'll be reading the stats every second
     private final static int 	STAT_INTERVAL = 1000; //ms
-    // the average will be calculated by storing
-    // the last n FPSs
-    private final static int	FPS_HISTORY_NR = 10;
+    // the average will be calculated by storing the last n FPSs
+    private final static int	FPS_HISTORY_NR = 3;
     // last time the status was stored
     private long lastStatusStore = 0;
     // the status time counter

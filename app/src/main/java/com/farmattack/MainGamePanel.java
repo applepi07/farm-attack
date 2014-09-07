@@ -80,7 +80,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (event.getY() > getHeight() - 250) {
+            if (event.getY() > getHeight() - 150) {
                 thread.setRunning(false);
                 ((Activity)getContext()).finish();
             } else {
